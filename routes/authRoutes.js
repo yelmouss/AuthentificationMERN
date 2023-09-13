@@ -9,4 +9,9 @@ router.post("/signup", authController.signup);
 // Route de connexion
 router.post("/login", authController.login);
 
+
+router.get('/confirmation/:userId', authController.confirmSignup);
+
+
+
 module.exports = router;
