@@ -22,19 +22,22 @@ const ProtectedCompo = () => {
         },
         body: JSON.stringify({ to, subject, text: message }),
       });
+  
       if (response.ok) {
         setSuccessMessage('E-mail envoyé avec succès !');
         setErrorMessage('');
       } else {
+        const errorText = await response.text(); // Obtenir le texte de l'erreur
         setSuccessMessage('');
-        setErrorMessage('Erreur lors de l\'envoi de l\'e-mail.');
+        setErrorMessage(`Erreur lors de l'envoi de l'e-mail : ${errorText}`);
       }
     } catch (error) {
       console.error('Erreur lors de l\'envoi de l\'e-mail :', error);
       setSuccessMessage('');
-      setErrorMessage('Erreur lors de l\'envoi de l\'e-mail.');
+      setErrorMessage('Erreur lors de l\'envoi de l\'e-mail :', error);
     }
   };
+  
 
   useEffect(() => {
     const storedFullName = localStorage.getItem("FullName");

@@ -21,7 +21,7 @@ mongoose
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 
-
+// Importer les routes d'envoi d'email
 const MailingRoutes = require("./routes/MailingRoutes");
 app.use("/api", MailingRoutes);
 
@@ -29,11 +29,11 @@ app.use("/api", MailingRoutes);
 const path = require('path');
 
 // Serve the static React app (build) from the "client/build" directory
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'front/build')));
 
 // Always serve the React app's HTML for all routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'front/build', 'index.html'));
 });
 
 const port = process.env.PORT || 8000;

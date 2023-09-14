@@ -2,18 +2,15 @@ const express = require("express");
 const sendEmail = require("../controllers/MailingController");
 const router = express.Router();
 
-
-
 // Route pour l'envoi de courrier
 router.post("/send-email", async (req, res) => {
-    const { to, subject, text } = req.body; // Extrayez les valeurs de req.body
+  const { to, subject, text } = req.body; // Extrayez les valeurs de req.body
 
-    // Vous pouvez personnaliser l'objet et le message ici si nécessaire
-    // Par exemple, pour ajouter un préfixe à l'objet et au message
+  // Vous pouvez personnaliser l'objet et le message ici si nécessaire
+  // Par exemple, pour ajouter un préfixe à l'objet et au message
 
-
-/* ... */
-const htmlContent = `
+  /* ... */
+  const htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,16 +77,31 @@ const htmlContent = `
     </div>
 </body>
 </html>`;
-/* ... */
+  /* ... */
 
-    
-    try {
-      await sendEmail(to, subject, htmlContent); // Utilisez les valeurs personnalisées
-      res.json({ message: "E-mail envoyé avec succès !" });
-    } catch (error) {
-      console.error("Erreur lors de l'envoi de l'e-mail :", error);
-      res.status(500).json({ message: "Erreur lors de l'envoi de l'e-mail" });
-    }
-  });
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  if (!emailRegex.test(to)) {
+    return res.status(400).json({ message: "Invalid email format" });
+  }
+
+     // Vérifier que le nom complet a plus de 8 caractères
+     if (subject.length < 8) {
+        return res.status(400).json({ message: "subject must be at least 8 characters long" });
+      }
   
-  module.exports = router;
+      // Vérifier que le mot de passe a au moins 8 caractères
+      if (text.length < 25) {
+        return res.status(400).json({ message: "message must be at least 25 characters long" });
+      }
+  
+
+  try {
+    await sendEmail(to, subject, htmlContent); // Utilisez les valeurs personnalisées
+    res.json({ message: "E-mail envoyé avec succès !" });
+  } catch (error) {
+    console.error("Erreur lors de l'envoi de l'e-mail :", error);
+    res.status(500).json({ message: "Erreur lors de l'envoi de l'e-mail" });
+  }
+});
+
+module.exports = router;
