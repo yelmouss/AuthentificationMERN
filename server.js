@@ -21,6 +21,11 @@ mongoose
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 
+
+const MailingRoutes = require("./routes/MailingRoutes");
+app.use("/api", MailingRoutes);
+
+
 const path = require('path');
 
 // Serve the static React app (build) from the "client/build" directory
