@@ -50,6 +50,10 @@ const Header = () => {
                   <Link to={'/Dashboard'} className={'nav-link'}>
                     Dashboard
                   </Link>
+                  <Link to={'/ImageGallery'} className={'nav-link'}>
+                    Gallery
+                  </Link>
+
                   <NavDropdown.Divider />
                   <Nav.Link eventKey={2} onClick={logout}>
                     Logout

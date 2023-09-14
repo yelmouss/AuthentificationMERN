@@ -7,6 +7,7 @@ import Header from "./components/Layout/Header";
 import Footer from "./components/Layout/Footer";
 import AuthGuard from "./components/AuthGuard";
 import ProtectedCompo from "./components/ProtectedCompo";
+import ImageGallery from "./components/ImageGallery";
 
 function Router() {
   return (
@@ -16,7 +17,7 @@ function Router() {
           path="/"
           element={
             <>
-             <Header />
+              <Header />
               <Home />
             </>
           }
@@ -48,6 +49,17 @@ function Router() {
               <AuthGuard />
               <Header />
               <ProtectedCompo />
+            </>
+          }
+        />
+
+        <Route
+          path="/ImageGallery/*"
+          element={
+            <>
+              <AuthGuard />
+              <Header />
+              <ImageGallery />
             </>
           }
         />
