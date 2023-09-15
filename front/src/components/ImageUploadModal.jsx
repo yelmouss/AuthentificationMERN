@@ -1,14 +1,15 @@
-// ImageUploadModal.js
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { createImage, deleteImage, likeImage, modifyImage } from './api/imageApi';
+import Form from 'react-bootstrap/Form'; // Ajout de la dépendance pour le formulaire
+import { createImage } from './api/imageApi';
 import { useNavigate } from 'react-router-dom';
 
 function ImageUploadModal(props) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
+  const history = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,8 +21,6 @@ function ImageUploadModal(props) {
       setDescription(value);
     }
   };
-
-  const history = useNavigate();
 
   const handleUpload = async () => {
     try {
@@ -42,14 +41,18 @@ function ImageUploadModal(props) {
         <Modal.Title>Ajouter une nouvelle image</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <input type="file" accept="image/*" name='image' onChange={handleInputChange} />
-        <input type="text" name='title' value={title} placeholder="Titre de l'image" onChange={handleInputChange} />
-        <textarea
-          name='description'
-          placeholder="Description"
-          value={description}
-          onChange={handleInputChange}
-        />
+        <Form.Group>
+          <Form.Label>Choisir une image</Form.Label>
+          <Form.Control type="file" accept="image/*" name='image' onChange={handleInputChange} />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Titre de l'image</Form.Label>
+          <Form.Control type="text" name='title' value={title} placeholder="Titre de l'image" onChange={handleInputChange} />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Description</Form.Label>
+          <Form.Control as="textarea" name='description' placeholder="Description" value={description} onChange={handleInputChange} />
+        </Form.Group>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.onClose}>
