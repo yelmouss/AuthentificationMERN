@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+
+.liked {
+  background-color: red;
+  color: white;
+}
+
+.disliked {
+  background-color: red;
+  color: white;
+}
+
+
+.imagegallery{
+  width: 100%;
+}

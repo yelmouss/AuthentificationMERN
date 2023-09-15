@@ -41,7 +41,7 @@ const path = require('path');
 
 // Serve the static React app (build) from the "client/build" directory
 app.use(express.static(path.join(__dirname, 'front/build')));
-
+app.use('/images', express.static(path.join(__dirname, 'images')));
 // Always serve the React app's HTML for all routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'front/build', 'index.html'));

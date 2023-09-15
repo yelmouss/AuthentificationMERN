@@ -1,109 +1,158 @@
-
 //imagecontroller.js
-const Image = require('../models/Image');
-const fs = require('fs');
+const Image = require("../models/Image");
+const fs = require("fs");
 
-exports.createPhoto= (req, res, next) => {
-    const ImageObject = JSON.parse(req.body.sauce);
-    const sauce = new Image({
-        ...ImageObject,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+const path = require("path");
+
+exports.createPhoto = (req, res, next) => {
+  const { description } = req.body; // Récupérez la description du champ du formulaire
+  const fileNameWithoutExtension = path.parse(req.file.filename).name; // Obtenez le nom de base du fichier sans l'extension
+  // const imageUrl = `${req.protocol}://${req.get('host')}/images/${fileNameWithoutExtension}`;
+  const imageUrl = `${req.protocol}://${req.get("host")}/images/${
+    req.file.filename
+  }`; // Ne pas ajouter l'extension ici
+
+  // Créez une nouvelle instance de l'objet Image en utilisant les données reçues
+  const image = new Image({
+    userId: req.auth.userId, // Vous devez déterminer l'ID de l'utilisateur ici
+    userName: req.auth.userName, // Vous devez déterminer le nom de l'utilisateur ici
+    description,
+    imageUrl,
+    likes: 0,
+    dislikes: 0,
+    usersLiked: [],
+    usersDisliked: [],
+  });
+
+  // Enregistrez l'image dans la base de données
+  image
+    .save()
+    .then(() => {
+      res.status(201).json({ message: "Image postée !" });
+    })
+    .catch((error) => {
+      res.status(400).json({ error: error });
     });
-    sauce.likes = 0;
-    sauce.dislikes = 0;
-    sauce.save()
-        .then(() => res.status(201).json({ message: 'Image postée !' }))
-        .catch((error) => res.status(400).json({ error: error }));
 };
 
-
 exports.getOnePhoto = (req, res, next) => {
-    Image.findOne({ _id: req.params.id })
-        .then((sauce) => res.status(200).json(sauce))
-        .catch((error) => res.status(404).json({ error: 'error' }));
+  Image.findOne({ _id: req.params.id })
+    .then((sauce) => res.status(200).json(sauce))
+    .catch((error) => res.status(404).json({ error: "error" }));
 };
 
 exports.getAllPhoto = (req, res, next) => {
-    Image.find()
-        .then((sauces) => res.status(200).json(sauces))
-        .catch((error) => res.status(400).json({ error: error }));
+  Image.find()
+    .then((sauces) => res.status(200).json(sauces))
+    .catch((error) => res.status(400).json({ error: error }));
 };
 
 exports.modifyPhoto = (req, res, next) => {
-
-    const sauceObject = req.file ?
-        {
-            ...JSON.parse(req.body.sauce),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        } : { ...req.body };
-        Image.findOne({ _id: req.params.id })
-        .then((sauce) => {
-            if (sauce.userId !== req.auth.userId) {
-                res.status(403).json({ error: 'Requête non authorisée' });
-            }
-            else {
-                Image.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-                    .then(() => res.status(201).json({ message: 'Image updated successfully!' }))
-                    .catch((error) => res.status(400).json({ error: error }));
-            }
-        })
+  const sauceObject = req.file
+    ? {
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : { ...req.body };
+  Image.findOne({ _id: req.params.id }).then((sauce) => {
+    if (sauce.userId !== req.auth.userId) {
+      res.status(403).json({ error: "Requête non authorisée" });
+    } else {
+      Image.updateOne(
+        { _id: req.params.id },
+        { ...sauceObject, _id: req.params.id }
+      )
+        .then(() =>
+          res.status(201).json({ message: "Image updated successfully!" })
+        )
+        .catch((error) => res.status(400).json({ error: error }));
+    }
+  });
 };
 
 exports.deletePhoto = (req, res, next) => {
-    Sauce.findOne({ _id: req.params.id })
-        .then((sauce) => {
-            if (!sauce) {
-                res.status(404).json({ error: 'Image non existante' });
-            }
-            if (sauce.userId !== req.auth.userId) {
-                res.status(403).json({ error: 'Requête non authorisée' });
-            }
-            const filename = sauce.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {
-                Sauce.deleteOne({ _id: req.params.id })
-                    .then(() => res.status(200).json({ message: 'Deleted!' }))
-                    .catch((error) => res.status(400).json({ error: error }));
-            });
-        })
-        .catch(error => res.status(500).json({ error }))
+  Image.findOne({ _id: req.params.id })
+    .then((sauce) => {
+      if (!sauce) {
+        res.status(404).json({ error: "Image non existante" });
+      }
+      if (sauce.userId !== req.auth.userId) {
+        res.status(403).json({ error: "Requête non authorisée" });
+      }
+      const filename = sauce.imageUrl.split("/images/")[1];
+      fs.unlink(`images/${filename}`, () => {
+        Image.deleteOne({ _id: req.params.id })
+          .then(() => res.status(200).json({ message: "Deleted!" }))
+          .catch((error) => res.status(400).json({ error: error }));
+      });
+    })
+    .catch((error) => res.status(500).json({ error }));
 };
+exports.likePhoto = async (req, res, next) => {
+  const { id: imageId } = req.params;
+  const { like: likeValue, userId } = req.body;
 
-exports.likePhoto = (req, res, next) => {
-    Image.findOne({ _id: req.params.id })
-        .then(sauce => {
-            if (req.body.like === 1) {
-                if (sauce.usersLiked.includes(req.body.userId)) {
-                    res.status(401).json({ error: 'Sauce déja liké' });
-                }
-                else {
-                    Image.updateOne({ _id: req.params.id }, { $inc: { likes: req.body.like++ }, $push: { usersLiked: req.body.userId } })
-                        .then((sauce) => res.status(200).json({ message: 'Like ajouté !' }))
-                        .catch(error => res.status(400).json({ error }))
-                }
+  try {
+    const image = await Image.findOne({ _id: imageId });
 
-            }
-            else if (req.body.like === -1) {
-                if (sauce.usersDisliked.includes(req.body.userId)) {
-                    res.status(401).json({ error: 'Image déja disliké' });
-                }
-                else {
-                    Image.updateOne({ _id: req.params.id }, { $inc: { dislikes: (req.body.like++) * -1 }, $push: { usersDisliked: req.body.userId } })
-                        .then((sauce) => res.status(200).json({ message: 'Dislike ajouté !' }))
-                        .catch(error => res.status(400).json({ error }));
-                }
-            }
-            else {
-                if (sauce.usersLiked.includes(req.body.userId)) {
-                    Image.updateOne({ _id: req.params.id }, { $pull: { usersLiked: req.body.userId }, $inc: { likes: -1 } })
-                        .then((sauce) => { res.status(200).json({ message: 'Like supprimé !' }) })
-                        .catch(error => res.status(400).json({ error }));
-                }
-                else if (sauce.usersDisliked.includes(req.body.userId)) {
-                    Image.updateOne({ _id: req.params.id }, { $pull: { usersDisliked: req.body.userId }, $inc: { dislikes: -1 } })
-                        .then((sauce) => { res.status(200).json({ message: 'Dislike supprimé !' }) })
-                        .catch(error => res.status(400).json({ error }));
-                }
-            }
-        })
-        .catch(error => res.status(400).json({ error }));
-}
+    if (!image) {
+      return res.status(404).json({ error: 'Image non trouvée' });
+    }
+
+    // Vérifiez si l'utilisateur a déjà aimé ou disliké l'image
+    const userLiked = image.usersLiked.includes(userId);
+    const userDisliked = image.usersDisliked.includes(userId);
+
+    if (likeValue === 1) {
+      if (userLiked) {
+        // L'utilisateur a déjà aimé l'image, supprimez le like
+        image.likes -= 1;
+        image.usersLiked = image.usersLiked.filter((id) => id !== userId);
+      } else {
+        // L'utilisateur n'a pas aimé l'image, ajoutez le like
+        image.likes += 1;
+        image.usersLiked.push(userId);
+
+        // Si l'utilisateur avait disliké l'image auparavant, supprimez le dislike
+        if (userDisliked) {
+          image.dislikes -= 1;
+          image.usersDisliked = image.usersDisliked.filter((id) => id !== userId);
+        }
+      }
+    } else if (likeValue === -1) {
+      if (userDisliked) {
+        // L'utilisateur a déjà disliké l'image, supprimez le dislike
+        image.dislikes -= 1;
+        image.usersDisliked = image.usersDisliked.filter((id) => id !== userId);
+      } else {
+        // L'utilisateur n'a pas disliké l'image, ajoutez le dislike
+        image.dislikes += 1;
+        image.usersDisliked.push(userId);
+
+        // Si l'utilisateur avait aimé l'image auparavant, supprimez le like
+        if (userLiked) {
+          image.likes -= 1;
+          image.usersLiked = image.usersLiked.filter((id) => id !== userId);
+        }
+      }
+    } else {
+      // Si likeValue n'est ni 1 ni -1, supprimez le like ou le dislike de l'utilisateur s'il existe
+      if (userLiked) {
+        image.likes -= 1;
+        image.usersLiked = image.usersLiked.filter((id) => id !== userId);
+      } else if (userDisliked) {
+        image.dislikes -= 1;
+        image.usersDisliked = image.usersDisliked.filter((id) => id !== userId);
+      }
+    }
+
+    // Enregistrez les modifications dans la base de données
+    await image.save();
+
+    res.status(200).json({ message: 'Action "Like" effectuée avec succès' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
