@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 exports.createPhoto = (req, res, next) => {
-  const { description } = req.body; // Récupérez la description du champ du formulaire
+  const { description, title } = req.body; // Récupérez la description du champ du formulaire
   const fileNameWithoutExtension = path.parse(req.file.filename).name; // Obtenez le nom de base du fichier sans l'extension
   // const imageUrl = `${req.protocol}://${req.get('host')}/images/${fileNameWithoutExtension}`;
   const imageUrl = `${req.protocol}://${req.get("host")}/images/${
@@ -15,7 +15,7 @@ exports.createPhoto = (req, res, next) => {
   // Créez une nouvelle instance de l'objet Image en utilisant les données reçues
   const image = new Image({
     userId: req.auth.userId, // Vous devez déterminer l'ID de l'utilisateur ici
-    userName: req.auth.userName, // Vous devez déterminer le nom de l'utilisateur ici
+    title,
     description,
     imageUrl,
     likes: 0,
@@ -47,30 +47,39 @@ exports.getAllPhoto = (req, res, next) => {
     .catch((error) => res.status(400).json({ error: error }));
 };
 
-exports.modifyPhoto = (req, res, next) => {
-  const sauceObject = req.file
-    ? {
-        ...JSON.parse(req.body.sauce),
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${
-          req.file.filename
-        }`,
-      }
-    : { ...req.body };
-  Image.findOne({ _id: req.params.id }).then((sauce) => {
-    if (sauce.userId !== req.auth.userId) {
-      res.status(403).json({ error: "Requête non authorisée" });
-    } else {
-      Image.updateOne(
-        { _id: req.params.id },
-        { ...sauceObject, _id: req.params.id }
-      )
-        .then(() =>
-          res.status(201).json({ message: "Image updated successfully!" })
-        )
-        .catch((error) => res.status(400).json({ error: error }));
+exports.modifyPhoto = async (req, res, next) => {
+  const { description } = req.body;
+
+  try {
+    const image = await Image.findOne({ _id: req.params.id });
+
+    if (!image) {
+      return res.status(404).json({ error: 'Image non trouvée' });
     }
-  });
+
+    if (image.userId !== req.auth.userId) {
+      return res.status(403).json({ error: 'Accès non autorisé' });
+    }
+
+    // Mettez à jour la description si elle a été modifiée
+    if (description) {
+      image.description = description;
+    }
+
+    // Mettez à jour l'image si une nouvelle a été téléchargée
+    if (req.file) {
+      const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+      image.imageUrl = imageUrl;
+    }
+
+    await image.save();
+
+    res.status(200).json({ message: 'Image modifiée avec succès' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
+
 
 exports.deletePhoto = (req, res, next) => {
   Image.findOne({ _id: req.params.id })

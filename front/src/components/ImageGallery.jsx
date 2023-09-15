@@ -1,23 +1,23 @@
+//imagegallery
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import {  deleteImage, likeImage, modifyImage } from './api/imageApi';
+import Masonry from "react-responsive-masonry";
+import { deleteImage, likeImage } from './api/imageApi';
 import ImageUploadModal from './ImageUploadModal';
+import ImageModifyModal from './ImageModifyModal';
 
 function ImageGallery() {
   const [images, setImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [description, setDescription] = useState("");
   const token = localStorage.getItem('token');
   const decodedToken = jwt_decode(token);
   const userId = decodedToken.userId;
   const history = useNavigate();
-  const [imagesLiked, setImagesLiked] = useState([]);
   const [showUploadModal, setShowUploadModal] = useState(false);
-
-
+  const [showModifyModal, setShowModifyModal] = useState(false);
+  const [selectedImageToModify, setSelectedImageToModify] = useState(null);
+  const [showUserImages, setShowUserImages] = useState(false); // État pour afficher uniquement les images de l'utilisateur
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -31,51 +31,32 @@ function ImageGallery() {
       });
   }, []);
 
- 
-
   // Fonction pour gérer les likes
   const handleLike = async (imageId, likeValue) => {
-    if (imagesLiked.includes(imageId)) {
-      return;
-    }
-
     try {
       const result = await likeImage(imageId, likeValue, userId);
       console.log('Image aimée avec succès', result);
-
-      // Mettez à jour les likes et dislikes dans le tableau d'images
-
       history(0);
     } catch (error) {
       console.error('Erreur lors de l\'action "Like" :', error);
     }
   };
 
-
-
   const handleImageUpload = () => {
     setShowUploadModal(true);
   };
 
   const handleUploadSuccess = () => {
-    // Handle a successful upload here if needed
-    // You can update the images list or perform other actions
-    // For example, fetch the updated images list
-    // and setImages(response.data);
     setShowUploadModal(false);
   };
 
+  const handleModifyImage = (image) => {
+    setSelectedImageToModify(image);
+    setShowModifyModal(true);
+  };
 
-  const handleImageModify = async (imageId) => {
-    try {
-      const result = await modifyImage(imageId, selectedImage, description);
-      console.log('Image modifiée avec succès', result);
-      setSelectedImage(null);
-      setDescription('');
-      history(0);
-    } catch (error) {
-      console.error('Erreur lors de la modification de l\'image :', error);
-    }
+  const handleModifySuccess = () => {
+    setShowModifyModal(false);
   };
 
   const handleImageDelete = async (imageId) => {
@@ -87,74 +68,91 @@ function ImageGallery() {
       console.error('Erreur lors de la suppression de l\'image :', error);
     }
   };
-  // Fonction pour déterminer si l'utilisateur a aimé ou disliké une image
+
   const getUserLikeStatus = (image) => {
     const userLiked = image.usersLiked.includes(userId);
     const userDisliked = image.usersDisliked.includes(userId);
 
     if (userLiked) {
-      return 'liked'; // Utilisateur a aimé l'image
+      return 'liked';
     } else if (userDisliked) {
-      return 'disliked'; // Utilisateur a disliké l'image
+      return 'disliked';
     } else {
-      return ''; // L'utilisateur n'a ni aimé ni disliké l'image
+      return '';
     }
   };
 
+  // Fonction pour basculer entre l'affichage des images de l'utilisateur et toutes les images
+  const toggleUserImages = () => {
+    setShowUserImages(!showUserImages);
+  };
+
+  // Filtrer les images en fonction de l'état showUserImages
+  const filteredImages = showUserImages
+    ? images.filter((image) => image.userId === userId)
+    : images;
+
   return (
-    <div className='container text-center p-5'>
-      <div>
-        <h3>Ajouter une nouvelle image</h3>
-
-
-        <button onClick={handleImageUpload}>Ajouter une nouvelle image</button>
-
+    <div className='container p-5'>
+      <div className='p-5 d-block fs-1 '>
+        <h1>Galerie d'images</h1>
+        <button onClick={handleImageUpload} className='btn btn-dark m-2'>
+          Ajouter une nouvelle image
+        </button>
+        <button onClick={toggleUserImages} className='btn btn-primary ml-3 m-2'>
+          {showUserImages ? 'Afficher toutes les photos' : 'Afficher mes photos uniquement'}
+        </button>
         <ImageUploadModal
           show={showUploadModal}
           onClose={() => setShowUploadModal(false)}
           onUploadSuccess={handleUploadSuccess}
         />
       </div>
-      <h2>Galerie d'images</h2>
-      <div className="image-list ">
 
+      <div className="image-list">
         <Masonry columnsCount={4}>
-          {images.map((image) => (
-
-            <div key={image._id} className="image-item p-2">
-
-              <img src={image.imageUrl} alt={image.description} className='imagegallery' />
-              <p>{image.description}</p>
+          {filteredImages.map((image) => (
+            <div key={image._id} className="image-item p-2 border">
+            
+            <img src={image.imageUrl} alt={image.description} className='imagegallery' />
               <div>
                 <span
                   onClick={() => handleLike(image._id, 1)} className='btn'
                 >
-                  {getUserLikeStatus(image) === 'liked' ? '❤️' : '👍'}
+                  {image.likes}   {getUserLikeStatus(image) === 'liked' ? '❤️' : '👍'}
                 </span>
-                <span>{image.likes} Likes</span>
-                <br />
                 <span
                   onClick={() => handleLike(image._id, -1)} className='btn'
                 >
-                  {getUserLikeStatus(image) === 'disliked' ? '👎' : '👎'}
+                  {image.dislikes}  {getUserLikeStatus(image) === 'disliked' ? '👎' : '👎'}
                 </span>
-                <span>{image.dislikes} Dislikes</span>
               </div>
+              <h6>{image.title}</h6>
+              <p>{image.description}</p>
+
               {image.userId === userId && (
-                <div>
-                  <button onClick={() => handleImageModify(image._id)} className='btn'>Modifier</button>
-                  <button onClick={() => handleImageDelete(image._id)} className='btn'>Supprimer</button>
+                <div className='text-end'>
+                  {/* Bouton pour ouvrir le modal de modification */}
+                  <button onClick={() => handleModifyImage(image)} className='btn'>🖊️</button>
+                  {selectedImageToModify && (
+                    <ImageModifyModal
+                      show={showModifyModal}
+                      onClose={() => setShowModifyModal(false)}
+                      image={selectedImageToModify} // Assurez-vous que l'ID est correctement passé ici
+                      onModifySuccess={handleModifySuccess}
+                      description={image.description}
+                    />
+                  )}
+                  <button onClick={() => handleImageDelete(image._id)} className='btn'>🗑️</button>
                 </div>
               )}
             </div>
-
           ))}
         </Masonry>
-
       </div>
-
     </div>
   );
 }
 
 export default ImageGallery;
+
