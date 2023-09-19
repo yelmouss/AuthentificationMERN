@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node run build"
+    "build": "npm run rebuild"
   },
   "keywords": [],
   "author": "",
