@@ -17,7 +17,8 @@ function ImageGallery() {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showModifyModal, setShowModifyModal] = useState(false);
   const [selectedImageToModify, setSelectedImageToModify] = useState(null);
-  const [showUserImages, setShowUserImages] = useState(false); // État pour afficher uniquement les images de l'utilisateur
+  const [showUserImages, setShowUserImages] = useState(false);
+   // État pour afficher uniquement les images de l'utilisateur
 
   useEffect(() => {
     const token = localStorage.getItem('token');
