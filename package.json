@@ -4,9 +4,10 @@
   "description": "",
   "main": "server.js",
   "engines": {
-    "node": "18.12.0"
+    "node": "18.x"
   },
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
