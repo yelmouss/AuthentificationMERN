@@ -25,6 +25,7 @@
     "nodemailer": "^6.9.5"
   },
   "devDependencies": {
+    "@vercel/node": "^3.0.5",
     "tcs": "^10.0.2"
   }
 }
