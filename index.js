@@ -38,7 +38,7 @@ app.use("/api/auth", authRoutes);
 // Importer les routes d'envoi d'email
 const MailingRoutes = require("./routes/MailingRoutes");
 app.use("/api", MailingRoutes);
-
+i
 // Importer d'ajout de photos et articles
 const ImagesRoutes = require("./routes/Images");
 app.use("/api", ImagesRoutes);
@@ -49,7 +49,7 @@ const path = require("path");
 // app.use(express.static(path.join(__dirname, "front/build")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-app.get('/public', (req, res)=>{
+app.get('/api/public', (req, res)=>{
 res.status(200).send({
 
   'data':'test'

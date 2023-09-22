@@ -16,7 +16,8 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://authentification-mern-tdal7slt6-yelmouss.vercel.app/api"
+      "destination":"/api/public"
+     
     }
   ]
 
