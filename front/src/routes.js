@@ -8,6 +8,7 @@ import Footer from "./components/Layout/Footer";
 import AuthGuard from "./components/AuthGuard";
 import ProtectedCompo from "./components/ProtectedCompo";
 import ImageGallery from "./components/ImageGallery";
+import Instagram from "./components/Instagram";
 
 function Router() {
   return (
@@ -19,6 +20,16 @@ function Router() {
             <>
               <Header />
               <Home />
+            </>
+          }
+        />
+
+        <Route
+          path="/instagram"
+          element={
+            <>
+              <Header />
+              <Instagram />
             </>
           }
         />

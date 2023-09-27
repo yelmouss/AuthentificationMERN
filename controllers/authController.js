@@ -3,6 +3,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const nodemailer = require("nodemailer");
+
+
+
+
 require("dotenv").config();
 
 // Configuration de Nodemailer
@@ -14,7 +18,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Fonction pour gérer l'inscription
+
 // Fonction pour gérer l'inscription
 exports.signup = async (req, res) => {
   try {

@@ -5,8 +5,11 @@ import './App.css'
 function App() {
   return (
     <>
-     
-      <Router />
+    <div className="home">
+    <Router />
+
+
+    </div>
     
     </>
   );

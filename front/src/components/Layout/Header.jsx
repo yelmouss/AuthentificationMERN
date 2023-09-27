@@ -8,6 +8,8 @@ import AuthGuard from '../AuthGuard';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { BsInstagram, BsFillHouseHeartFill, BsFillKeyFill, BsFillLockFill, BsFillPersonFill } from "react-icons/bs";
+
 
 const Header = () => {
   // Vérifiez si un token est présent dans le localStorage
@@ -39,14 +41,23 @@ const Header = () => {
 
           </Nav>
           <Nav>
-            <Link to={'/'} className={'nav-link'}>
-              Home
+            <Link to={'/'} className={'nav-link text-center'}>
+              <BsFillHouseHeartFill className='fs-4' />
+              <br />
+              <i>Home</i>
+            </Link>
+
+            <Link to={'/instagram'} className={'nav-link text-center'}>
+              <BsInstagram className='fs-4' />
+              <br />
+              <i>IG Api</i>
             </Link>
             {/* Affichez le lien "Logout" si l'utilisateur est connecté */}
             {isUserLoggedIn ? (
               <>
 
-                <NavDropdown title={fullName && fullName + ' '} id="collapsible-nav-dropdown">
+                <NavDropdown  title={fullName && <> <br /> {fullName}</>} id="collapsible-nav-dropdown">
+
                   <Link to={'/Dashboard'} className={'nav-link'}>
                     Dashboard
                   </Link>
@@ -56,14 +67,18 @@ const Header = () => {
 
                   <NavDropdown.Divider />
                   <Nav.Link eventKey={2} onClick={logout}>
-                    Logout
+                    <BsFillLockFill />  Logout
                   </Nav.Link>
                 </NavDropdown>
               </>
             ) : (
-              <Link to={'/login'} className={'nav-link'}>
-                Login
+
+              <Link to={'/login'} className={'nav-link text-center'}>
+                <BsFillKeyFill className='fs-4' />
+                <br />
+                <i>Login</i>
               </Link>
+
             )}
           </Nav>
         </Navbar.Collapse>

@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 require("dotenv").config();
 const app = express();
 app.use(express.json());
@@ -38,10 +39,14 @@ app.use("/api/auth", authRoutes);
 // Importer les routes d'envoi d'email
 const MailingRoutes = require("./routes/MailingRoutes");
 app.use("/api", MailingRoutes);
-i
+
 // Importer d'ajout de photos et articles
 const ImagesRoutes = require("./routes/Images");
 app.use("/api", ImagesRoutes);
+
+
+const IgRoutes = require("./routes/IgRoutes");
+app.use("/api", IgRoutes);
 
 const path = require("path");
 
@@ -59,6 +64,13 @@ res.status(200).send({
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "front/build", "index.html"));
 // });
+
+
+// Endpoint pour récupérer les données d'Instagram
+// app.get('', );
+
+
+
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {

@@ -2,6 +2,19 @@
   text-align: center;
 }
 
+.home {
+  background-image: url("./img/flat-mountains.svg");
+  background-size: cover;
+  background-position: bottom;
+  background-attachment: fixed;
+}
+.techimg{
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -37,7 +50,6 @@
   }
 }
 
-
 .liked {
   background-color: red;
   color: white;
@@ -48,7 +60,31 @@
   color: white;
 }
 
+.imagegallery {
+  width: 100%;
+}
 
-.imagegallery{
+
+.swiper {
+  padding-top: 50px;
+  padding-bottom: 80px;
+}
+
+.swiper .swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 300px;
+  -webkit-box-reflect: below 1px
+    linear-gradient(transparent, transparent, #0006);
+}
+
+/* Dans votre fichier CSS (ou ajoutez-la directement à votre composant React) */
+.video-container {
+  max-width: 100%;
+  height: auto;
+}
+
+.igimg{
   width: 100%;
 }
