@@ -48,6 +48,9 @@ app.use("/api", ImagesRoutes);
 const IgRoutes = require("./routes/IgRoutes");
 app.use("/api", IgRoutes);
 
+const AdminRoutes = require('./routes/adminRoutes')
+app.use("/api", AdminRoutes);
+
 const path = require("path");
 
 // Serve the static React app (build) from the "client/build" directory
@@ -60,14 +63,6 @@ res.status(200).send({
   'data':'test'
 })
 })
-// Always serve the React app's HTML for all routes
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "front/build", "index.html"));
-// });
-
-
-// Endpoint pour récupérer les données d'Instagram
-// app.get('', );
 
 
 

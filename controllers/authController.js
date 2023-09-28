@@ -4,9 +4,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const nodemailer = require("nodemailer");
 
-
-
-
 require("dotenv").config();
 
 // Configuration de Nodemailer
@@ -96,65 +93,6 @@ exports.signup = async (req, res) => {
   }
 };
 
-// exports.signup = async (req, res) => {
-//   try {
-//     const { username, password, FullName } = req.body;
-
-//     // Vérifier si l'utilisateur existe déjà
-//     const existingUser = await User.findOne({ username });
-//     if (existingUser) {
-//       return res.status(400).json({ message: "Username already exists" });
-//     }
-
-//     // Hasher le mot de passe
-//     const hashedPassword = await bcrypt.hash(password, 10);
-
-//     // Créer un nouvel utilisateur
-//     const user = new User({ username, password: hashedPassword, FullName });
-//     await user.save();
-
-//     // Envoyer l'e-mail de confirmation avec le lien de redirection
-//     const confirmationLink = `http://localhost:3000/confirmation/${user._id}`;
-
-//     const htmlContent = `
-//     <!DOCTYPE html>
-//     <html>
-//     <head>
-//         <meta charset="utf-8">
-//         <title>Confirmation de votre inscription</title>
-//         <style>
-//             /* Styles CSS pour le texte de l'e-mail */
-//             /* Ajoutez vos styles personnalisés ici */
-//         </style>
-//     </head>
-//     <body>
-//         <p>Bonjour,</p>
-//         <p>Merci de vous être inscrit sur notre site.</p>
-//         <p>Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :</p>
-//         <p><a href="${confirmationLink}">${confirmationLink}</a></p>
-//         <p>Cordialement,<br>Votre équipe</p>
-//     </body>
-//     </html>`;
-
-//     const mailOptions = {
-//       from: "yelmouss.devt@gmail.com",
-//       to: username,
-//       subject: "Confirmation de votre inscription",
-//       html: htmlContent, // Utilisez html au lieu de text
-//     };
-//     transporter.sendMail(mailOptions, (error, info) => {
-//       if (error) {
-//         console.log(error);
-//       } else {
-//         console.log("Email sent: " + info.response);
-//       }
-//     });
-//     res.json({ message: "Signup successful please confirm your suscription" });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// };
 
 exports.confirmSignup = async (req, res) => {
   try {
