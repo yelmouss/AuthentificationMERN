@@ -3,7 +3,7 @@ const axios = require("axios");
 exports.getIgPhoto = async (req, res) => {
   try {
     const response = await axios.get(
-      "https://graph.instagram.com/me/media?fields=id,caption,data,permalink,username,media_type,media_url,thumbnail_url&access_token=IGQWRNeERKTnFXcm5nM0hoS0d2TXY5TEVVQndPRGVFMXBDNXk0UVJWdXdONGZAUX1hqV1M0Nm1UVTRwTHZAmelUwTzZA4Y0tMZA0tmRkZAkSkpMYVBzdGNkZAnJ1VDNkWGJsQlBDcUtEVmdIbTVmb3FOd3V5WWNoaWNpRzAZD"
+      "https://graph.instagram.com/me/media?fields=id,caption,data,permalink,username,media_type,media_url,thumbnail_url&access_token=IGQWRPeVJYRERKRjFhZA09zbm9kbVpwN3dJSWNPSGpNZAnlpYkI3WS02aU5SamZAlSW5Qa0o2N2ZAHR0pxR05fdFdZAUDJTOWZAtWnNTNDBZAbXpjYkFkbFI0cnktcE1hbnFuZAW9ZAUVVXZATNqY2pnSl9KdWFkUWNIOG81Q2cZD"
     );
     //   const filteredPhotos = response.data.data.filter(photo => photo.media_type === 'IMAGE');
     res.json(response.data.data);
@@ -18,7 +18,7 @@ exports.getIgPhoto = async (req, res) => {
 exports.getIgCount = async (req, res) => {
   try {
     const response = await axios.get(
-      "https://graph.instagram.com/me/media?fields=id,caption,data,permalink,media_type,media_url,username,thumbnail_url&access_token=IGQWRNeERKTnFXcm5nM0hoS0d2TXY5TEVVQndPRGVFMXBDNXk0UVJWdXdONGZAUX1hqV1M0Nm1UVTRwTHZAmelUwTzZA4Y0tMZA0tmRkZAkSkpMYVBzdGNkZAnJ1VDNkWGJsQlBDcUtEVmdIbTVmb3FOd3V5WWNoaWNpRzAZD"
+      "https://graph.instagram.com/me/media?fields=id,caption,data,permalink,media_type,media_url,username,thumbnail_url&access_token=IGQWRPeVJYRERKRjFhZA09zbm9kbVpwN3dJSWNPSGpNZAnlpYkI3WS02aU5SamZAlSW5Qa0o2N2ZAHR0pxR05fdFdZAUDJTOWZAtWnNTNDBZAbXpjYkFkbFI0cnktcE1hbnFuZAW9ZAUVVXZATNqY2pnSl9KdWFkUWNIOG81Q2cZD"
     );
     const photos = response.data.data;
     const photoCount = photos.length;
@@ -52,7 +52,7 @@ exports.getIgCount = async (req, res) => {
 exports.getIgFollowers = async (req, res) => {
   try {
     const response = await axios.get(
-      "https://graph.instagram.com/v12.0/me?fields=id,username,account_type,media_count,media&access_token=IGQWRNeERKTnFXcm5nM0hoS0d2TXY5TEVVQndPRGVFMXBDNXk0UVJWdXdONGZAUX1hqV1M0Nm1UVTRwTHZAmelUwTzZA4Y0tMZA0tmRkZAkSkpMYVBzdGNkZAnJ1VDNkWGJsQlBDcUtEVmdIbTVmb3FOd3V5WWNoaWNpRzAZD"
+      "https://graph.instagram.com/v12.0/me?fields=id,username,account_type,media_count,media&access_token=IGQWRPeVJYRERKRjFhZA09zbm9kbVpwN3dJSWNPSGpNZAnlpYkI3WS02aU5SamZAlSW5Qa0o2N2ZAHR0pxR05fdFdZAUDJTOWZAtWnNTNDBZAbXpjYkFkbFI0cnktcE1hbnFuZAW9ZAUVVXZATNqY2pnSl9KdWFkUWNIOG81Q2cZD"
     );
     const followersCount = response.data;
     res.json({ followersCount });

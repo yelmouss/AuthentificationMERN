@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { BsInstagram, BsFillHouseHeartFill, BsFillKeyFill, BsFillLockFill, BsFillPersonFill } from "react-icons/bs";
-
+import Font from 'react-font'
 
 const Header = () => {
   // Vérifiez si un token est présent dans le localStorage
@@ -34,7 +34,20 @@ const Header = () => {
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/">MernDev</Navbar.Brand>
+        <Navbar.Brand href="/" className='fs-2 fw-bolder'>
+          <Font family='Dancing Script'>
+            {" YelmousS".split("").map((letter, index) => {
+              return (
+                <span key={index} className="text-fun-pink">
+                  {letter}
+                </span>
+              );
+            })}
+
+          </Font>
+
+
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
@@ -56,7 +69,7 @@ const Header = () => {
             {isUserLoggedIn ? (
               <>
 
-                <NavDropdown  title={fullName && <> <br /> {fullName}</>} id="collapsible-nav-dropdown">
+                <NavDropdown title={fullName && <> <br /> {fullName}</>} id="collapsible-nav-dropdown">
 
                   <Link to={'/Dashboard'} className={'nav-link'}>
                     Dashboard
@@ -84,6 +97,7 @@ const Header = () => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+
   );
 };
 

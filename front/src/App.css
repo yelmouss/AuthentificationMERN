@@ -1,7 +1,12 @@
 .App {
   text-align: center;
 }
+@import url("https://unpkg.com/leaflet@1.6.0/dist/leaflet.css");
 
+.leaflet-container {
+  width: 100%;
+  height: 200px;
+}
 .home {
   background-image: url("./img/flat-mountains.svg");
   background-size: cover;
@@ -87,4 +92,16 @@
 
 .igimg{
   width: 100%;
+}
+
+.igimg:hover{
+  transform: scale(1.1);
+}
+
+.text-fun-pink:hover {
+  color: #55acee;
+  transition: top ease 0.5s;
+  transform: scale(0.7);
+  /* transform:matrix(0, 1, 1, 0, 0, 0); */
+/*  */
 }
