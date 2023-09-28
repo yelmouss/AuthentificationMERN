@@ -15,7 +15,7 @@ export const createImage = async (selectedImage, description, title) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/createImage",
+      "https://apitest-ruby.vercel.app/api/createImage",
       formData,
       {
         headers: {
@@ -33,7 +33,7 @@ export const createImage = async (selectedImage, description, title) => {
 export const deleteImage = async (imageId) => {
   try {
     const response = await axios.delete(
-      `http://localhost:8000/api/deleteImage/${imageId}`
+      `https://apitest-ruby.vercel.app/api/deleteImage/${imageId}`
     );
     return response.data;
   } catch (error) {
@@ -46,7 +46,7 @@ export const modifyImage = async (imageId, formData) => {
   
   try {
     const response = await axios.put(
-      `http://localhost:8000/api/modifyImage/${imageId}`,
+      `https://apitest-ruby.vercel.app/api/modifyImage/${imageId}`,
       formData,
       {
         headers: {
@@ -64,7 +64,7 @@ export const modifyImage = async (imageId, formData) => {
 export const likeImage = async (imageId, likeValue, userId) => {
   try {
     const response = await axios.post(
-      `http://localhost:8000/api/likeImage/${imageId}`,
+      `https://apitest-ruby.vercel.app/api/likeImage/${imageId}`,
       {
         like: likeValue,
         userId: userId,

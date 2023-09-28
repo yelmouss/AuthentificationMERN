@@ -22,7 +22,7 @@ const Instagram = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/instagram-data');
+                const response = await axios.get('https://apitest-ruby.vercel.app/api/instagram-data');
                 setPhotos(response.data);
                 setLoading(false);
             } catch (error) {
@@ -36,7 +36,7 @@ const Instagram = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/instagram-getIgCount');
+                const response = await axios.get('https://apitest-ruby.vercel.app/api/instagram-getIgCount');
                 setDataDash(response.data);
                 setLoading(false);
             } catch (error) {
@@ -50,7 +50,7 @@ const Instagram = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/instagram-getIgFollowers');
+                const response = await axios.get('https://apitest-ruby.vercel.app/api/instagram-getIgFollowers');
                 setProfilInfo(response.data);
                 console.log(response.data)
                 setLoading(false);

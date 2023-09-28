@@ -23,7 +23,7 @@ function ImageGallery() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.get('http://localhost:8000/api/images')
+    axios.get('https://apitest-ruby.vercel.app/api/images')
       .then((response) => {
         setImages(response.data);
       })

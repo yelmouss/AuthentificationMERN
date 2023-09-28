@@ -34,7 +34,7 @@ const Header = () => {
   // Fonction pour vérifier si un utilisateur est administrateur
   const checkIsAdmin = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/isAdmin/${userId}`);
+      const response = await axios.get(`https://apitest-ruby.vercel.app/api/isAdmin/${userId}`);
       const isAdmin = response.data.isAdmin;
 
       // Mettre à jour l'état isAdmin

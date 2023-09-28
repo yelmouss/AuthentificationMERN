@@ -20,7 +20,7 @@ const AdminStats = ({ onUpdateStatistics }) => {
     // Create a function to update statistics
     const updateStatistics = () => {
         axios
-            .get('http://localhost:8000/api/listAdminUsers')
+            .get('https://apitest-ruby.vercel.app/api/listAdminUsers')
             .then((response) => {
                 const users = response.data;
 

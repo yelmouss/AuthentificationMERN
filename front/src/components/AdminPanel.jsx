@@ -29,7 +29,7 @@ const AdminPanel = () => {
 
     const handleFetchAdminUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/listAdminUsers');
+            const response = await axios.get('https://apitest-ruby.vercel.app/api/listAdminUsers');
             setUsers(response.data);
         } catch (error) {
             console.error(error);
@@ -39,7 +39,7 @@ const AdminPanel = () => {
 
     const handleCheckIsAdmin = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/isAdmin/${userId}`);
+            const response = await axios.get(`https://apitest-ruby.vercel.app/api/isAdmin/${userId}`);
             const isAdmin = response.data.isAdmin;
             setIsAdmin(isAdmin);
         } catch (error) {
@@ -64,7 +64,7 @@ const AdminPanel = () => {
 
     const handleSaveChanges = async () => {
         try {
-            await axios.put(`http://localhost:8000/api/editAdminUser/${editedUser._id}`, {
+            await axios.put(`https://apitest-ruby.vercel.app/api/editAdminUser/${editedUser._id}`, {
                 username: editedUser.username,
                 isAdmin: editedUser.isAdmin,
                 FullName: editedUser.FullName,

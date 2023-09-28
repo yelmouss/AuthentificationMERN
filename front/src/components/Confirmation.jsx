@@ -12,7 +12,7 @@ function Confirmation() {
     const confirmEmail = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/auth/confirmation/${userId}`
+          `https://apitest-ruby.vercel.app/api/auth/confirmation/${userId}`
         );
         
         // Check the response message and handle accordingly
