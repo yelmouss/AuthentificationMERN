@@ -13,7 +13,6 @@ import CountUp from 'react-countup';
 import { BsInstagram } from "react-icons/bs";
 
 
-
 const Instagram = () => {
     const [photos, setPhotos] = useState([]);
     const [DataDash, setDataDash] = useState([]);

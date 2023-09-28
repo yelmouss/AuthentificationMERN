@@ -2,27 +2,27 @@ const User = require("../models/User");
 const isAdminMiddleware = require("../middleware/isAdminMiddleware");
 
 // Ajouter un utilisateur en tant qu'administrateur
-exports.addAdminUser = async (req, res) => {
-  try {
-    const { username, password, FullName } = req.body;
-    const isAdmin = true; // L'utilisateur ajouté est un administrateur
+// exports.addAdminUser = async (req, res) => {
+//   try {
+//     const { username, password, FullName } = req.body;
+//     const isAdmin = true; // L'utilisateur ajouté est un administrateur
 
-    // Créer un nouvel utilisateur avec le champ isAdmin défini
-    const user = new User({ username, password, FullName, isAdmin });
-    await user.save();
+//     // Créer un nouvel utilisateur avec le champ isAdmin défini
+//     const user = new User({ username, password, FullName, isAdmin });
+//     await user.save();
 
-    res.json({ message: "Admin user added successfully" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
+//     res.json({ message: "Admin user added successfully" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
 
 // Modifier un utilisateur en tant qu'administrateur
 exports.editAdminUser = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { username, password, FullName } = req.body;
+    const { username,  FullName, isAdmin } = req.body;
 
     // Rechercher l'utilisateur par son ID
     const user = await User.findById(userId);
@@ -33,8 +33,8 @@ exports.editAdminUser = async (req, res) => {
 
     // Mettre à jour les champs nécessaires
     user.username = username;
-    user.password = password;
     user.FullName = FullName;
+    user.isAdmin = isAdmin;
 
     // Sauvegarder les modifications
     await user.save();

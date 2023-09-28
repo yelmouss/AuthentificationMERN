@@ -15,7 +15,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
 // Fonction pour gérer l'inscription
 exports.signup = async (req, res) => {
   try {
@@ -29,12 +28,16 @@ exports.signup = async (req, res) => {
 
     // Vérifier que le nom complet a plus de 8 caractères
     if (FullName.length < 8) {
-      return res.status(400).json({ message: "Fullname must be at least 8 characters long" });
+      return res
+        .status(400)
+        .json({ message: "Fullname must be at least 8 characters long" });
     }
 
     // Vérifier que le mot de passe a au moins 8 caractères
     if (password.length < 8) {
-      return res.status(400).json({ message: "Password must be at least 8 characters long" });
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 8 characters long" });
     }
 
     // Vérifier si l'utilisateur existe déjà
@@ -93,7 +96,6 @@ exports.signup = async (req, res) => {
   }
 };
 
-
 exports.confirmSignup = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -145,10 +147,16 @@ exports.login = async (req, res) => {
     }
 
     // Générer un token JWT
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET,  { expiresIn: '24h' });
+    // const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET,  { expiresIn: '24h' });
+    // Générer un token JWT avec le champ isAdmin
+    const token = jwt.sign(
+      { userId: user._id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
 
     // Inclure le nom complet dans la réponse JSON
-    res.json({ token, FullName: user.FullName , UserEmail: user.username });
+    res.json({ token, FullName: user.FullName, UserEmail: user.username });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });

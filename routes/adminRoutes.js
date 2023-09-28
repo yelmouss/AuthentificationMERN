@@ -4,7 +4,7 @@ const userController = require("../controllers/userController");
 const isAdminMiddleware = require("../middleware/isAdminMiddleware");
 
 // Route pour ajouter un utilisateur en tant qu'administrateur
-router.post("/addAdminUser", isAdminMiddleware, userController.addAdminUser);
+// router.post("/addAdminUser", isAdminMiddleware, userController.addAdminUser);
 
 // Route pour modifier un utilisateur en tant qu'administrateur
 router.put("/editAdminUser/:userId", isAdminMiddleware, userController.editAdminUser);

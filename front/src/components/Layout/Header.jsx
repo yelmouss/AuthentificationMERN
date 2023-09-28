@@ -53,7 +53,7 @@ const Header = () => {
   };
 
   return (
-    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary"  sticky="top" >
       <Container>
         <Navbar.Brand href="/" className='fs-2 fw-bolder'>
           <Font family='Dancing Script'>

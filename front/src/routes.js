@@ -9,6 +9,7 @@ import AuthGuard from "./components/AuthGuard";
 import ProtectedCompo from "./components/ProtectedCompo";
 import ImageGallery from "./components/ImageGallery";
 import Instagram from "./components/Instagram";
+import AdminPanel from "./components/AdminPanel";
 
 function Router() {
   return (
@@ -60,6 +61,17 @@ function Router() {
               <AuthGuard />
               <Header />
               <ProtectedCompo />
+            </>
+          }
+        />
+
+        <Route
+          path="/AdminPanel/*"
+          element={
+            <>
+              <AuthGuard />
+              <Header />
+              <AdminPanel />
             </>
           }
         />
