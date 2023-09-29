@@ -11,6 +11,8 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 
+const serverless = require("serverless-http");
+
 // Connexion à la base de données MongoDB
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -44,11 +46,10 @@ app.use("/api", MailingRoutes);
 const ImagesRoutes = require("./routes/Images");
 app.use("/api", ImagesRoutes);
 
-
 const IgRoutes = require("./routes/IgRoutes");
 app.use("/api", IgRoutes);
 
-const AdminRoutes = require('./routes/adminRoutes')
+const AdminRoutes = require("./routes/adminRoutes");
 app.use("/api", AdminRoutes);
 
 const path = require("path");
@@ -57,18 +58,15 @@ const path = require("path");
 // app.use(express.static(path.join(__dirname, "front/build")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-app.get('/api/public', (req, res)=>{
-res.status(200).send({
-
-  'data':'test'
-})
-})
-
-
-
+app.get("/api/public", (req, res) => {
+  res.status(200).send({
+    data: "test",
+  });
+});
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-  
 });
+
+module.exports.handler = serverless(app);
