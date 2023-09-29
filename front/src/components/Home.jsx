@@ -67,10 +67,10 @@ const Home = () => {
               </div>
             </Atropos>
           </Col>
-          <Col className='  ' lg={3}>
+          {/* <Col className='  ' lg={3}>
             <hr />
             <img src={Geek} alt="Logo" className='img-fluid bg-light rounded rounded-circle p-3 ' />
-          </Col>
+          </Col> */}
         </Row>
 
 

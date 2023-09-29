@@ -60,7 +60,7 @@ const Footer = () => {
 
 
   return (
-    <footer className="footer mt-5 py-3 bg-light bg-opacity-50">
+    <footer className="footer mt-5 py-3 bg-black text-light p-5 bg-opacity-75">
       <Container fluid>
         <Row lg={2} xs={1} className='d-flex align-items-start  justify-content-center'>
 
@@ -68,8 +68,8 @@ const Footer = () => {
             <div className="container">
            
              
-              <Atropos shadow={false}>
-              <h5 className="text-muted">Contact Me 📧</h5>
+            
+              <h5 className=" text-light">Contact Me 📧</h5>
                 <Form className='bg-light p-5 bg-opacity-50'>
 
                   <Form.Group controlId="formTo">
@@ -111,17 +111,22 @@ const Footer = () => {
                   </div>
                  
                 </Form>
-              </Atropos>
+              
 
               {successMessage && <Alert variant="success">{successMessage}</Alert>}
               {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
             </div>
           </Col>
           <Col> <Container>
-            <h5 className="text-muted">You can find me here 👇</h5>
+            <h5 className="text">Phone number</h5>
+            <p>+212 6-12-86-56-81</p>
+            <h5 className="text">Email</h5>
+            <p>yelmouss.devt@gmail.com</p>
+         
+            <h5 className="text">You can find me here 👇</h5>
             <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
               <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution='&copy; <a href="http://yelmouss.com">yelmouss</a>'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <Marker position={position}>

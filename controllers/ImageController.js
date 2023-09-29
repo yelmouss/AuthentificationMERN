@@ -1,7 +1,6 @@
 //imagecontroller.js
 const Image = require("../models/Image");
 const fs = require("fs");
-
 const path = require("path");
 
 exports.createPhoto = (req, res, next) => {
@@ -32,6 +31,7 @@ exports.createPhoto = (req, res, next) => {
     })
     .catch((error) => {
       res.status(400).json({ error: error });
+      console.log(error)
     });
 };
 

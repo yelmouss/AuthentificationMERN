@@ -85,7 +85,7 @@ const Authenfication = () => {
     <Container className="p-5 mt-5">
       <Row className="justify-content-md-center">
         <Col xs lg="5">
-          <Atropos className="my-atropos">
+          {/* <Atropos className="my-atropos"> */}
             <Accordion defaultActiveKey="0" flush>
               <Accordion.Item eventKey="0">
                 <Accordion.Header>Login</Accordion.Header>
@@ -169,7 +169,7 @@ const Authenfication = () => {
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
-          </Atropos>
+          {/* </Atropos> */}
         </Col>
       </Row>
     </Container>
