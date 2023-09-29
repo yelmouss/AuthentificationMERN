@@ -9,7 +9,7 @@ const headers = {
 
 const deleteUser = async (userId) => {
   try {
-    await axios.delete(`https://apitest-ruby.vercel.app/api/deleteAdminUser/${userId}`, {
+    await axios.delete(`${process.env.REACT_APP_API_URL}/api/deleteAdminUser/${userId}`, {
       headers,
     });
   } catch (error) {
@@ -20,7 +20,7 @@ const deleteUser = async (userId) => {
 
 const editUser = async (userId, data) => {
   try {
-    await axios.put(`https://apitest-ruby.vercel.app/api/editAdminUser/${userId}`, data, {
+    await axios.put(`${process.env.REACT_APP_API_URL}/api/editAdminUser/${userId}`, data, {
       headers,
     });
   } catch (error) {

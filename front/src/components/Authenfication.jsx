@@ -30,7 +30,7 @@ const Authenfication = () => {
   const handleSignup = async () => {
     try {
       const response = await axios.post(
-        "https://apitest-ruby.vercel.app/api/auth/signup",
+        `${process.env.REACT_APP_API_URL}/api/auth/signup`,
         {
           username: formData.username,
           password: formData.password,
@@ -55,7 +55,7 @@ const Authenfication = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "https://apitest-ruby.vercel.app/api/auth/login",
+        `${process.env.REACT_APP_API_URL}/api/auth/login`,
         {
           username: formData.username,
           password: formData.password

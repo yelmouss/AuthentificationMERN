@@ -46,35 +46,28 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ message: "Username already exists" });
     }
 
-    // Hasher le mot de passe
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Créer un nouvel utilisateur
-    const user = new User({ username, password: hashedPassword, FullName });
-    await user.save();
-
     // Envoyer l'e-mail de confirmation avec le lien de redirection
-    const confirmationLink = `http://localhost:3000/confirmation/${user._id}`;
+    const confirmationLink = `https://authentification-mern-c4ui.vercel.app/confirmation/${user._id}`;
 
     const htmlContent = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Confirmation de votre inscription</title>
-        <style>
-            /* Styles CSS pour le texte de l'e-mail */
-            /* Ajoutez vos styles personnalisés ici */
-        </style>
-    </head>
-    <body>
-        <p>Bonjour,</p>
-        <p>Merci de vous être inscrit sur notre site.</p>
-        <p>Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :</p>
-        <p><a href="${confirmationLink}">${confirmationLink}</a></p>
-        <p>Cordialement,<br>Votre équipe</p>
-    </body>
-    </html>`;
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <title>Confirmation de votre inscription</title>
+            <style>
+                /* Styles CSS pour le texte de l'e-mail */
+                /* Ajoutez vos styles personnalisés ici */
+            </style>
+        </head>
+        <body>
+            <p>Bonjour,</p>
+            <p>Merci de vous être inscrit sur notre site.</p>
+            <p>Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :</p>
+            <p><a href="${confirmationLink}">${confirmationLink}</a></p>
+            <p>Cordialement,<br>Votre équipe</p>
+        </body>
+        </html>`;
 
     const mailOptions = {
       from: "yelmouss.devt@gmail.com",
@@ -89,7 +82,17 @@ exports.signup = async (req, res) => {
         console.log("Email sent: " + info.response);
       }
     });
-    res.json({ message: "Signup successful please confirm your subscription" });
+
+    // Hasher le mot de passe
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Créer un nouvel utilisateur
+    const user = new User({ username, password: hashedPassword, FullName });
+    await user.save();
+
+    res.json({
+      message: "Signup successful please confirm your subscription" + username,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
@@ -117,7 +120,7 @@ exports.confirmSignup = async (req, res) => {
     await user.save();
 
     console.log("User confirmed successfully");
-    res.redirect("http://localhost:3000/");
+    res.redirect("https://authentification-mern-c4ui.vercel.app/");
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });

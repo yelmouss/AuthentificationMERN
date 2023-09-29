@@ -15,7 +15,7 @@ const ProtectedCompo = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const sendEmail = async () => {
     try {
-      const response = await fetch('https://apideploye-test.vercel.app/api/send-email', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/send-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
