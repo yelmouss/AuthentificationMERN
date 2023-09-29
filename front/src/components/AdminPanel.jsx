@@ -208,7 +208,7 @@ const AdminPanel = () => {
 
                                                 <MdRestoreFromTrash
 
-                                                    className="delete-button fs-2 text-danger"
+                                                    className=" delete-button fs-2 text-danger"
                                                     onClick={() => handleDeleteUser(user._id)}
                                                     disabled={!isAdmin} />
 

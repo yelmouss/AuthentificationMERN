@@ -4,9 +4,9 @@ import Router from "./routes";
 import './App.css'
 function App() {
 
-  // const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = process.env.REACT_APP_API_URL;
 
-  // console.log(apiUrl)
+  console.log(apiUrl)
 
   return (
     <>

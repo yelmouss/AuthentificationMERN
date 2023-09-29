@@ -92,7 +92,7 @@ exports.signup = async (req, res) => {
     res.json({ message: "Signup successful please confirm your subscription" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error "+err });
   }
 };
 
