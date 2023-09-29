@@ -54,48 +54,60 @@ exports.signup = async (req, res) => {
     await user.save();
 
     // Envoyer l'e-mail de confirmation avec le lien de redirection
-    const confirmationLink = `https://authentification-mern-c4ui.vercel.app/confirmation/${user._id}`;
+     // Envoyer l'e-mail de confirmation avec le lien de redirection
+     const confirmationLink = `https://authentification-mern-c4ui.vercel.app/confirmation/${user._id}`;
+     const htmlContent = `
+       <!DOCTYPE html>
+       <html>
+       <head>
+           <meta charset="utf-8">
+           <title>Confirmation de votre inscription</title>
+           <style>
+               /* Styles CSS pour le texte de l'e-mail */
+               /* Ajoutez vos styles personnalisés ici */
+           </style>
+       </head>
+       <body>
+           <p>Bonjour,</p>
+           <p>Merci de vous être inscrit sur notre site.</p>
+           <p>Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :</p>
+           <p><a href="${confirmationLink}">${confirmationLink}</a></p>
+           <p>Cordialement,<br>Votre équipe</p>
+       </body>
+       </html>`;
+ 
+     const mailOptions = {
+       from: "yelmouss.devt@gmail.com",
+       to: username,
+       subject: "Confirmation de votre inscription",
+       html: htmlContent,
+     };
+ 
+     // Utilisation d'une promesse pour l'envoi de l'e-mail
+     const sendEmail = () => {
+       return new Promise((resolve, reject) => {
+         transporter.sendMail(mailOptions, (error, info) => {
+           if (error) {
+             reject(error);
+           } else {
+             resolve(info.response);
+           }
+         });
+       });
+     };
+ 
+     // Envoi de l'e-mail et attendre la réponse avant de poursuivre
+     const emailResponse = await sendEmail();
+ 
+     // Si l'e-mail est envoyé avec succès, continuer le processus d'inscription
+     res.status(200).json({ message: "Email sent successfully", emailResponse });
+   } catch (err) {
+     console.error(err);
+     res.status(500).json({ message: "Internal server error " + err });
+   }
+ };
 
-    const htmlContent = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Confirmation de votre inscription</title>
-        <style>
-            /* Styles CSS pour le texte de l'e-mail */
-            /* Ajoutez vos styles personnalisés ici */
-        </style>
-    </head>
-    <body>
-        <p>Bonjour,</p>
-        <p>Merci de vous être inscrit sur notre site.</p>
-        <p>Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :</p>
-        <p><a href="${confirmationLink}">${confirmationLink}</a></p>
-        <p>Cordialement,<br>Votre équipe</p>
-    </body>
-    </html>`;
-
-    const mailOptions = {
-      from: "yelmouss.devt@gmail.com",
-      to: username,
-      subject: "Confirmation de votre inscription",
-      html: htmlContent, // Utilisez html au lieu de text
-    };
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        res.status(500).json({ message: "Email  error "+error });
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
-    res.json({ message: "Signup successful please confirm your subscription" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal server error "+err });
-  }
-};
-
+ 
 exports.confirmSignup = async (req, res) => {
   try {
     const { userId } = req.params;
