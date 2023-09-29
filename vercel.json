@@ -8,16 +8,12 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "index.js"
+      "src": "/api/images/(.*)", 
+      "dest": "/api/images/$1" 
     },
     {
-      "src": "/images/(.*)",
-      "headers": { "Cache-Control": "max-age=31536000" },
-      "dest": "/images/$1"
+      "src": "/(.*)", 
+      "dest": "index.js" 
     }
-    
   ]
-
- 
 }
