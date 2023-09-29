@@ -2,21 +2,17 @@
   "version": 2,
   "builds": [
     {
-      "src": "index.js",
+      "src": "index.js", 
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/upload",
-      "methods": ["POST"],
+      "src": "/(.*)",
       "dest": "index.js"
-    },
-    {
-      "src": "/images/(.*)",
-      "headers": { "Cache-Control": "max-age=31536000" },
-      "dest": "/images/$1"
     }
+    
   ]
-}
+
  
+}
