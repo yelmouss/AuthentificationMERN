@@ -10,14 +10,12 @@ const Footer = () => {
   const [to, setTo] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const sendEmail = async () => {
     try {
       // Désactivez le bouton d'envoi pendant l'appel à l'API
       document.getElementById('sendEmailButton').setAttribute('disabled', 'true');
 
-      const response = await fetch('https://apideploye-test.vercel.app/api/send-email', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/send-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,11 +35,11 @@ const Footer = () => {
         setSubject('');
         setMessage('');
       } else {
-        const errorText = await response.text();
+        const errorText = await response.json();
         // Affichez une alerte d'erreur avec SweetAlert
         Swal.fire({
           icon: 'error',
-          title: `Erreur lors de l'envoi de l'e-mail : ${errorText}`,
+          title: `Erreur lors de l'envoi de l'e-mail : ${errorText.message}`,
         });
       }
     } catch (error) {
@@ -62,16 +60,14 @@ const Footer = () => {
   return (
     <footer className="footer mt-5 py-3 bg-black text-light p-5 bg-opacity-75">
       <Container fluid>
+      <h5 className=" text-light">Contact Me 📧</h5>
+      <hr />
         <Row lg={2} xs={1} className='d-flex align-items-start  justify-content-center'>
-
+    
           <Col>
-            <div className="container">
-           
-             
-            
-              <h5 className=" text-light">Contact Me 📧</h5>
-                <Form className='bg-light p-5 bg-opacity-50'>
-
+            <div className="container">       
+              
+                <Form className=' p-5 bg-opacity-50'>
                   <Form.Group controlId="formTo">
                     <Form.Label>Votre Email</Form.Label>
                     <Form.Control
@@ -108,13 +104,10 @@ const Footer = () => {
                   <Button variant="dark" onClick={sendEmail} id="sendEmailButton">
                     Send 📤
                   </Button>
-                  </div>
-                 
-                </Form>
-              
+                  </div>                 
+                </Form>          
 
-              {successMessage && <Alert variant="success">{successMessage}</Alert>}
-              {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+            
             </div>
           </Col>
           <Col> <Container>

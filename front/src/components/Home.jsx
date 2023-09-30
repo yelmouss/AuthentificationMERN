@@ -26,11 +26,14 @@ const Home = () => {
         <Row xs="auto" className='d-flex justify-content-center align-items-center'>
           {Technologies.map((item) =>
             <Col className='text-center align-items-stretch'>
-              <figure className='card h-100'>
+                <Atropos shadow={false}>
+ <figure className='card h-100'>
                 <img src={item.ImageUrl} alt={item.name} className='techimg' />
 
                 <figcaption className='card-footer'>{item.name} </figcaption>
               </figure>
+                </Atropos>
+             
 
             </Col>
           )}
